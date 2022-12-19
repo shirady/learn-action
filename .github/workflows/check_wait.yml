@@ -1,0 +1,14 @@
+
+name: check wait
+on: workflow_dispatch
+
+jobs:
+  check_wait:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout noobaa-core
+        uses: actions/checkout@v3
+      - name: Run script
+        run: |
+         ls -al
+         sudo ./my_script.sh
