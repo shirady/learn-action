@@ -53,4 +53,13 @@ jobs:
       - name: Run all S3-tests
         run: |
          kubectl apply -f https://gist.githubusercontent.com/shirady/713217e1a222247c504371345d6e9089/raw/70d77cc73be6da7b42f05fa6fbd70c3325a817a7/shira_job_tests.yml
+         kubectl wait --for=condition=complete job/noobaa-tests-s3 & completion_pid=$!
+         kubectl wait --for=condition=failed job/noobaa-tests-s3 && exit 1 &failure_pid=$! 
+         wait -n $completion_pid $failure_pid
+         exit_code=$?
+         if (( $exit_code == 0 )); then
+           echo "Job completed"
+         else
+          echo "Job failed with exit code ${exit_code}, exiting..."
+         fi
          kubectl logs $(kubectl get pods | grep noobaa-tests-s3 | awk '{ print $1}' | awk 'NR==1')
