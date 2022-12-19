@@ -1,0 +1,56 @@
+
+name: test job
+run-name: ${{ github.actor }} running test job
+on: workflow_dispatch
+
+jobs:
+  deploy-noobaa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout noobaa-core
+        uses: actions/checkout@v3
+        with:
+          repository: 'noobaa/noobaa-core'
+          ref: master
+          path: 'noobaa-core'
+        
+      - name: Deploy minikube
+        run: |
+         cd ./noobaa-core
+         sudo bash ./.travis/deploy_minikube.sh
+      - name: Build noobaa core
+        run: |
+         cd ./noobaa-core
+         make noobaa NOOBAA_TAG=noobaa-core:s3-tests
+      - name: Build noobaa tester
+        run: |
+         cd ./noobaa-core
+         make tester TESTER_TAG=noobaa-tester:s3-tests
+        
+      - name: Checkout noobaa-operator
+        uses: actions/checkout@v3
+        with:
+          repository: 'noobaa/noobaa-operator'
+          ref: master
+          path: 'noobaa-operator'
+       
+      - name: Update kubectl context
+        run: |
+          sudo mv /root/.kube /root/.minikube $HOME
+          sudo chown -R $USER $HOME/.kube $HOME/.minikube
+          sed "s/root/home\/$USER/g" $HOME/.kube/config > tmp; mv tmp $HOME/.kube/config
+       
+      - name: Build operator
+        run: |
+         cd ./noobaa-operator
+         make all
+         
+      - name: Install noobaa system
+        run: |
+         cd ./noobaa-operator
+         ./build/_output/bin/noobaa-operator install --mini --noobaa-image='noobaa-core:s3-tests'
+         
+      - name: Run all S3-tests
+        run: |
+         kubectl apply -f https://gist.githubusercontent.com/shirady/713217e1a222247c504371345d6e9089/raw/70d77cc73be6da7b42f05fa6fbd70c3325a817a7/shira_job_tests.yml
+         kubectl logs $(kubectl get pods | grep noobaa-tests-s3 | awk '{ print $1}' | awk 'NR==1')
