@@ -23,7 +23,8 @@ jobs:
         run: |
          cd ./noobaa-core
          make tester TESTER_TAG=noobaa-tester:s3-tests
-         docker tag noobaa-core:latest noobaa-core:s3-tests
+         docker image ls
+         docker tag noobaa-core noobaa-core:s3-tests
         
       - name: Checkout noobaa-operator
         uses: actions/checkout@v3
