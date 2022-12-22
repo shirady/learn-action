@@ -14,3 +14,7 @@ jobs:
          then JOB_FAILED=true
          fi
          echo "JOB_FAILED is ${JOB_FAILED}"
+         if (JOB_FAILED)
+         echo "JOB_FAILED is ${JOB_FAILED}"
+         exit 1
+         fi
