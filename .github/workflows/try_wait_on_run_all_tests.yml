@@ -82,4 +82,4 @@ jobs:
          set -x
          cd learn-action
          kubectl apply -f ./shira_job_tests.yml
-         sudo ./my_script
+         sudo ./my_script.sh
