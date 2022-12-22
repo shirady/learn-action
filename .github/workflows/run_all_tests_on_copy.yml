@@ -1,0 +1,64 @@
+
+name: run-all-tests-on-copy
+run-name: ${{ github.actor }} running test job
+on: workflow_dispatch
+
+jobs:
+  run-all-tests:
+    runs-on: ubuntu-latest
+    steps:
+#       - name: Checkout noobaa-core
+#         uses: actions/checkout@v3
+#         with:
+#           repository: 'noobaa/noobaa-core'
+#           ref: master
+#           path: 'noobaa-core'
+          
+      - name: Checkout noobaa-core
+        uses: actions/checkout@v3
+        with:
+          repository: 'shirady/noobaa-core-copy'
+          ref: shira-check-action
+          path: 'noobaa-core'
+        
+      - name: Deploy minikube
+        run: |
+         cd ./noobaa-core
+         sudo bash ./.travis/deploy_minikube.sh
+
+      - name: Build noobaa tester
+        run: |
+         cd ./noobaa-core
+         make tester TESTER_TAG=noobaa-tester:s3-tests
+         docker image ls
+         docker tag noobaa:latest noobaa-core:s3-tests
+        
+      - name: Checkout noobaa-operator
+        uses: actions/checkout@v3
+        with:
+          repository: 'noobaa/noobaa-operator'
+          ref: master
+          path: 'noobaa-operator'
+       
+      - name: Update kubectl context
+        run: |
+          sudo mv /root/.kube /root/.minikube $HOME
+          sudo chown -R $USER $HOME/.kube $HOME/.minikube
+          sed "s/root/home\/$USER/g" $HOME/.kube/config > tmp; mv tmp $HOME/.kube/config
+       
+      - name: Build operator
+        run: |
+         cd ./noobaa-operator
+         make all
+         
+      - name: Install noobaa system
+        run: |
+         cd ./noobaa-operator
+         ./build/_output/bin/noobaa-operator install --mini --noobaa-image='noobaa-core:s3-tests'
+         
+      - name: Run all S3-tests
+        run: |
+         kubectl apply -f https://gist.githubusercontent.com/shirady/713217e1a222247c504371345d6e9089/raw/a2dd40060c0bbb2e722f952380838067926244c5/shira_job_tests.yml
+         JOB_FAILED=false;
+         kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=800s || true
+         kubectl logs job/noobaa-tests-s3 --tail 10000 -f
