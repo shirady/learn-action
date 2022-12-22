@@ -1,0 +1,17 @@
+
+name: check var
+on: workflow_dispatch
+
+jobs:
+  check_var:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check var
+        run: |
+         JOB_FAILED=false
+         echo JOB_FAILED is ${JOB_FAILED}
+         CONDITION=true
+         if (CONDITION)
+         then JOB_FAILED=true
+         fi
+         echo JOB_FAILED is ${JOB_FAILED}
