@@ -1,3 +1,6 @@
+#!/bin/bash
+set -x
+
 # wait for completion as background process - capture PID
 kubectl wait --for=condition=complete job/noobaa-tests-s3 & 
 completion_pid=$!
