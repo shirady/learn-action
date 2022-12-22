@@ -14,7 +14,7 @@ jobs:
 #           ref: master
 #           path: 'noobaa-core'
           
-      - name: Checkout noobaa-core
+      - name: Checkout noobaa-core-copy
         uses: actions/checkout@v3
         with:
           repository: 'shirady/noobaa-core-copy'
@@ -26,12 +26,11 @@ jobs:
          cd ./noobaa-core
          sudo bash ./.travis/deploy_minikube.sh
 
-#       - name: Build noobaa tester
-#         run: |
-#          cd ./noobaa-core
-#          make tester TESTER_TAG=noobaa-tester:s3-tests
-#          docker image ls
-#          docker tag noobaa:latest noobaa-core:s3-tests
+      - name: Build noobaa tester
+        run: |
+         cd ./noobaa-core
+         make tester TESTER_TAG=noobaa-tester:s3-tests
+         docker tag noobaa:latest noobaa-core:s3-tests
         
       - name: Checkout noobaa-operator
         uses: actions/checkout@v3
@@ -45,16 +44,16 @@ jobs:
           sudo mv /root/.kube /root/.minikube $HOME
           sudo chown -R $USER $HOME/.kube $HOME/.minikube
           sed "s/root/home\/$USER/g" $HOME/.kube/config > tmp; mv tmp $HOME/.kube/config
-       
-#       - name: Build operator
-#         run: |
-#          cd ./noobaa-operator
-#          make all
+          
+      - name: Build operator
+        run: |
+         cd ./noobaa-operator
+         make all
          
-#       - name: Install noobaa system
-#         run: |
-#          cd ./noobaa-operator
-#          ./build/_output/bin/noobaa-operator install --mini --noobaa-image='noobaa-core:s3-tests'
+      - name: Install noobaa system
+        run: |
+         cd ./noobaa-operator
+         ./build/_output/bin/noobaa-operator install --mini --noobaa-image='noobaa-core:s3-tests'
          
       - name: Checkout learn-action
         uses: actions/checkout@v3
