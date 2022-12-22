@@ -1,10 +1,10 @@
 
-name: run-all-tests-on-copy
+name: run-all-tests-on-copy-with-var
 run-name: ${{ github.actor }} running test job
 on: workflow_dispatch
 
 jobs:
-  run-all-tests:
+  run-all-tests-on-copy-with-var:
     runs-on: ubuntu-latest
     steps:
 #       - name: Checkout noobaa-core
