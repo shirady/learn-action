@@ -62,23 +62,21 @@ jobs:
           ref: master
           path: 'learn-action'
          
-#       - name: Run all S3-tests
-#         run: |
-#          set -x
-#          kubectl apply -f https://gist.githubusercontent.com/shirady/713217e1a222247c504371345d6e9089/raw/a2dd40060c0bbb2e722f952380838067926244c5/shira_job_tests.yml
-#          JOB_FAILED=false;
-#          EXIT_CODE=0;
-#          kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=1000s || (EXIT_CODE=$? && true && JOB_FAILED=true)
-#          kubectl logs job/noobaa-tests-s3 --tail 10000 -f
-#          if (${JOB_FAILED}); then 
-#          echo JOB_FAILED status is ${JOB_FAILED}
-#          echo EXIT_CODE is ${EXIT_CODE}
-#          fi
-#          exit ${EXIT_CODE}
-         
       - name: Run all S3-tests
         run: |
-         set -x
-         cd learn-action
-         kubectl apply -f ./shira_job_tests.yml
-         sudo ./my_script.sh
+          set -x
+          kubectl apply -f ./shira_job_tests.yml
+          kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=1000s || (JOB_FAILED=true && EXIT_CODE=0)
+          kubectl logs job/noobaa-tests-s3 --tail 10000 -f
+          if [${JOB_FAILED}] then 
+          echo JOB_FAILED status is ${JOB_FAILED}
+          EXIT_CODE=0
+          fi
+          exit ${EXIT_CODE}
+         
+#      - name: Run all S3-tests
+#        run: |
+#         set -x
+#         cd learn-action
+#         kubectl apply -f ./shira_job_tests.yml
+#         sudo ./my_script.sh
