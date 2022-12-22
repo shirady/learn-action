@@ -51,7 +51,7 @@ jobs:
          
       - name: Run all S3-tests
         run: |
-         kubectl apply -f https://gist.githubusercontent.com/shirady/713217e1a222247c504371345d6e9089/raw/70d77cc73be6da7b42f05fa6fbd70c3325a817a7/shira_job_tests.yml
+         kubectl apply -f https://gist.githubusercontent.com/shirady/713217e1a222247c504371345d6e9089/raw/a2dd40060c0bbb2e722f952380838067926244c5/shira_job_tests.yml
          JOB_FAILED=false;
          kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=800s || true
          kubectl logs job/noobaa-tests-s3 --tail 10000 -f
