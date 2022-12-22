@@ -65,6 +65,7 @@ jobs:
       - name: Run all S3-tests
         run: |
           set -x
+          cd learn-action
           kubectl apply -f ./shira_job_tests.yml
           kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=1000s || (JOB_FAILED=true && EXIT_CODE=0)
           kubectl logs job/noobaa-tests-s3 --tail 10000 -f
