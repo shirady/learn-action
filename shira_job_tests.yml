@@ -10,7 +10,7 @@ spec:
         image: noobaa-tester:s3-tests
         command: 
             - /bin/bash
-            - -c"
+            - -c
             - "cd /root/node_modules/noobaa-core/; node ./src/test/system_tests/setup_ceph_s3_config.js; sleep 10; node ./src/test/system_tests/test_ceph_s3.js"
         envFrom:
           - secretRef:
