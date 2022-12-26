@@ -96,11 +96,10 @@ jobs:
           retval_complete=$?
          done
 
-         kubectl logs job/noobaa-tests-s3 --tail 10000
+         kubectl logs job/noobaa-tests-s3 --tail 10000 -f
 
          if [ ${retval_failed} -eq 0 ]
          then
              echo "Job failed. Please check logs."
-             kubectl logs job/noobaa-tests-s3 --tail 10000
              exit 1
          fi
