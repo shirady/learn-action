@@ -90,9 +90,9 @@ jobs:
          retval_failed=1
          while [[ $retval_complete -ne 0 ]] && [[ $retval_failed -ne 0 ]]; do
           sleep 5
-          output=$(kubectl wait --for=condition=failed job/noobaa-tests-s3 --timeout=0 2>&1)
+          output=$(kubectl wait --for=condition=failed job/noobaa-tests-s3 --timeout=0 || true 2>&1)
           retval_failed=$?
-          output=$(kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=0 2>&1)
+          output=$(kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=0 || true 2>&1)
           retval_complete=$?
          done
 
