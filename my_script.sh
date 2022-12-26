@@ -1,6 +1,9 @@
 #!/bin/bash
 set -x
 
+# check if i have a problem with kubelet
+kubectl get pods --v=8
+
 # wait for completion as background process - capture PID
 kubectl wait --for=condition=complete job/noobaa-tests-s3 & 
 completion_pid=$!
