@@ -1,0 +1,105 @@
+
+name: run-all-tests-on-copy-with-script-body
+run-name: ${{ github.actor }} running test job
+on: workflow_dispatch
+
+jobs:
+  run-all-tests-on-copy-with-script-body:
+    runs-on: ubuntu-latest
+    steps:
+#       - name: Checkout noobaa-core
+#         uses: actions/checkout@v3
+#         with:
+#           repository: 'noobaa/noobaa-core'
+#           ref: master
+#           path: 'noobaa-core'
+          
+      - name: Checkout noobaa-core-copy
+        uses: actions/checkout@v3
+        with:
+          repository: 'shirady/noobaa-core-copy'
+          ref: shira-check-action
+          path: 'noobaa-core'
+        
+      - name: Deploy minikube
+        run: |
+         cd ./noobaa-core
+         sudo bash ./.travis/deploy_minikube.sh
+
+      - name: Build noobaa tester
+        run: |
+         cd ./noobaa-core
+         make tester TESTER_TAG=noobaa-tester:s3-tests
+         docker tag noobaa:latest noobaa-core:s3-tests
+        
+      - name: Checkout noobaa-operator
+        uses: actions/checkout@v3
+        with:
+          repository: 'noobaa/noobaa-operator'
+          ref: master
+          path: 'noobaa-operator'
+       
+      - name: Update kubectl context
+        run: |
+          sudo mv /root/.kube /root/.minikube $HOME
+          sudo chown -R $USER $HOME/.kube $HOME/.minikube
+          sed "s/root/home\/$USER/g" $HOME/.kube/config > tmp; mv tmp $HOME/.kube/config
+          
+      - name: Build operator
+        run: |
+         cd ./noobaa-operator
+         make all
+         
+      - name: Install noobaa system
+        run: |
+         cd ./noobaa-operator
+         ./build/_output/bin/noobaa-operator install --mini --noobaa-image='noobaa-core:s3-tests'
+         
+      - name: Checkout learn-action
+        uses: actions/checkout@v3
+        with:
+          repository: 'shirady/learn-action'
+          ref: master
+          path: 'learn-action'
+         
+#       - name: Run all S3-tests
+#         run: |
+#           set -x
+#           kubectl apply -f ./shira_job_tests.yml
+#           kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=1000s || (JOB_FAILED=true && EXIT_CODE=0)
+#           kubectl logs job/noobaa-tests-s3 --tail 10000 -f
+#           if [${JOB_FAILED}] then 
+#           echo JOB_FAILED status is ${JOB_FAILED}
+#           EXIT_CODE=0
+#           fi
+#           exit ${EXIT_CODE}
+         
+#       - name: Run all S3-tests
+#         run: |
+#          set -x
+#          cd learn-action
+#          kubectl apply -f ./shira_job_tests.yml
+#          sudo ./my_script_without_wait.sh
+
+      - name: Run all S3-tests
+        run: |
+         set -x
+         cd learn-action
+         kubectl apply -f ./shira_job_tests.yml
+         retval_complete=1
+         retval_failed=1
+         while [[ $retval_complete -ne 0 ]] && [[ $retval_failed -ne 0 ]]; do
+          sleep 5
+          output=$(kubectl wait --for=condition=failed job/noobaa-tests-s3 --timeout=0 2>&1)
+          retval_failed=$?
+          output=$(kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=0 2>&1)
+          retval_complete=$?
+         done
+
+         kubectl logs job/noobaa-tests-s3 --tail 10000
+
+         if [ ${retval_failed} -eq 0 ]
+         then
+             echo "Job failed. Please check logs."
+             exit 1
+         fi
