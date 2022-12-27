@@ -8,6 +8,7 @@ jobs:
     steps:
     - name: My check
       run: |
+       set -x
        export flag=false
        sleep 5 && flag=true &
        my_pid=$!
