@@ -83,7 +83,6 @@ jobs:
 
       - name: Run all S3-tests
         run: |
-         set -e
          set -x
          cd learn-action
          kubectl apply -f ./shira_job_tests.yml
