@@ -8,4 +8,8 @@ jobs:
     steps:
     - name: My check
       run: |
-       sleep 5 && exit 1 &
+       export flag=false
+       sleep 5 && flag=true && exit 1 &
+       my_pid=$!
+       echo ${flag}
+       wait -n ${my_pid}
