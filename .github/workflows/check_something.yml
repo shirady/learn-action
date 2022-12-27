@@ -9,7 +9,7 @@ jobs:
     - name: My check
       run: |
        export flag=false
-       sleep 5 && flag=true && exit 1 &
+       sleep 5 && flag=true &
        my_pid=$!
        echo ${flag}
        wait -n ${my_pid}
