@@ -1,0 +1,11 @@
+name: check-something
+run-name: ${{ github.actor }} running test job
+on: workflow_dispatch
+
+jobs:
+  check-something:
+    runs-on: ubuntu-latest
+    steps:
+    - name: My check
+      run: |
+       sleep 5 && exit 1 &
