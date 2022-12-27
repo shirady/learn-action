@@ -1,6 +1,6 @@
 #!/bin/bash
 set -x
-
+kubectl get pods --v=8
 retval_complete=1
 retval_failed=1
 while [[ $retval_complete -ne 0 ]] && [[ $retval_failed -ne 0 ]]; do
