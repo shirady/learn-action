@@ -2,8 +2,19 @@
 
 
 name: run-all-tests-job-success
-run-name: ${{ github.actor }} running test job
-on: workflow_dispatch
+on: 
+  push:
+    branches:
+      - master
+    paths:
+      - 'src/*'
+  pull_request:
+      branches:
+      - master
+      paths:
+      - 'src/*'
+  workflow_dispatch:
+  
 
 jobs:
   run-all-tests-job-success:
@@ -66,6 +77,7 @@ jobs:
       - name: Run all S3-tests
         run: |
           set -x
+          cd ./learn-action
           kubectl apply -f ./shira_job_tests.yml
           kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=1000s
           kubectl logs job/noobaa-tests-s3 --tail 10000 -f
