@@ -14,5 +14,4 @@ jobs:
          sleep 5s
          END=$(date)
          echo ${END}
-         DIFF=${END}-${START}
-         echo ${diff}
+         echo END ${END} START ${START}
