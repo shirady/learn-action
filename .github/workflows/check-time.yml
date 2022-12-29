@@ -9,10 +9,10 @@ jobs:
       - name: Run script
         run: |
          set -x
-         date
          START=$(date)
-         echo START
+         echo ${START}
          sleep 5s
          END=$(date)
-         date
-         echo END
+         echo ${END}
+         DIFF=${END}-${START}
+         ECHO ${diff}
