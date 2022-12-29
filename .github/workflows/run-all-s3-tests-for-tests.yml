@@ -78,10 +78,14 @@ jobs:
       - name: Run all S3-tests
         run: |
           set -x
-          sleep 5m
+          sleep 3m
           cd ./noobaa-core
           kubectl apply -f ./src/test/system_tests/noobaa-tests-s3-job.yml
-          kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=1000s || TIMEOUT=true
+          START=$(date)
+          echo ${START}
+          kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=18m || TIMEOUT=true
+          END=$(date)
+          echo ${END}
           kubectl logs job/noobaa-tests-s3 --tail 10000 -f
           if kubectl logs job/noobaa-tests-s3 --tail 10 | grep -q "Ceph Test Failed:"; then
             exit 1
@@ -90,4 +94,8 @@ jobs:
             echo "timed out waiting for the condition on jobs/noobaa-tests-s3"
             exit 1
           fi
-
+          if kubectl logs job/noobaa-tests-s3 --tail 1000 | grep -q "ran 0 tests"; then
+            echo "The s3 tests did not run!"
+            exit 1
+          fi
+          echo END ${END} START ${START}
