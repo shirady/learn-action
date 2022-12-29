@@ -75,21 +75,18 @@ jobs:
          cd ./noobaa-operator
          ./build/_output/bin/noobaa-operator install --mini --noobaa-image='noobaa-core:s3-tests'
          
-      - name: Checkout learn-action
-        uses: actions/checkout@v3
-        with:
-          repository: 'shirady/learn-action'
-          ref: master
-          path: 'learn-action'
-         
       - name: Run all S3-tests
         run: |
           set -x
-          cd ./learn-action
-          kubectl apply -f ./shira_job_tests.yml
-          kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=1000s
+          cd ./noobaa-core
+          kubectl apply -f ./src/test/system_tests/noobaa-tests-s3-job.yml
+          kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=1000s || TIMEOUT=true
           kubectl logs job/noobaa-tests-s3 --tail 10000 -f
-          kubectl describe -o wide
-          if [ kubectl logs job/noobaa-tests-s3 --tail 10000 | grep -q "CEPH TEST FAILED TESTS SUMMARY" ] then 
-              exit 1
+          if kubectl logs job/noobaa-tests-s3 --tail 10 | grep -q "Ceph Test Failed:"; then
+            exit 1
           fi
+          if [ ${TIMEOUT} ]; then
+            echo "timed out waiting for the condition on jobs/noobaa-tests-s3"
+            exit 1
+          fi
+
