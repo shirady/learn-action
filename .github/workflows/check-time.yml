@@ -15,4 +15,4 @@ jobs:
          END=$(date)
          echo ${END}
          DIFF=${END}-${START}
-         ECHO ${diff}
+         echo ${diff}
