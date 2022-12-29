@@ -1,0 +1,97 @@
+
+
+
+name: run-all-tests-job-success
+on: 
+  push:
+    branches:
+      - master
+    paths:
+      - 'src/*'
+  pull_request:
+      branches:
+      - master
+      paths:
+      - 'src/*'
+  workflow_dispatch:
+  
+
+jobs:
+  run-all-tests-job-success:
+    runs-on: ubuntu-latest
+    steps:
+#       - name: Checkout noobaa-core
+#         uses: actions/checkout@v3
+#         with:
+#           repository: 'noobaa/noobaa-core'
+#           ref: master
+#           path: 'noobaa-core'
+          
+#       - name: Checkout noobaa-core-copy
+#         uses: actions/checkout@v3
+#         with:
+#           repository: 'shirady/noobaa-core-copy'
+#           ref: shira-check-action
+#           path: 'noobaa-core'
+        
+      - name: Checkout noobaa-core-copy-for-test
+        uses: actions/checkout@v3
+        with:
+          repository: 'shirady/noobaa-core-copy-for-test'
+          ref: master
+          path: 'noobaa-core'
+          
+      - name: Deploy minikube
+        run: |
+         cd ./noobaa-core
+         sudo bash ./.travis/deploy_minikube.sh
+      - name: Build noobaa tester
+        run: |
+         cd ./noobaa-core
+         make tester TESTER_TAG=noobaa-tester:s3-tests
+         docker tag noobaa:latest noobaa-core:s3-tests
+        
+      - name: Checkout noobaa-operator
+        uses: actions/checkout@v3
+        with:
+          repository: 'noobaa/noobaa-operator'
+          ref: master
+          path: 'noobaa-operator'
+       
+      - name: Update kubectl context
+        run: |
+          sudo mv /root/.kube /root/.minikube $HOME
+          sudo chown -R $USER $HOME/.kube $HOME/.minikube
+          sed "s/root/home\/$USER/g" $HOME/.kube/config > tmp; mv tmp $HOME/.kube/config
+          
+      - name: Build operator
+        run: |
+         cd ./noobaa-operator
+         make all
+         
+      - name: Install noobaa system
+        run: |
+         cd ./noobaa-operator
+         ./build/_output/bin/noobaa-operator install --mini --noobaa-image='noobaa-core:s3-tests'
+         
+      - name: Checkout learn-action
+        uses: actions/checkout@v3
+        with:
+          repository: 'shirady/learn-action'
+          ref: master
+          path: 'learn-action'
+         
+      - name: Run all S3-tests
+        run: |
+          set -x
+          cd ./noobaa-core
+          kubectl apply -f ./src/test/system_tests/noobaa-tests-s3-job.yml
+          kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=1000s || TIMEOUT=true
+          kubectl logs job/noobaa-tests-s3 --tail 10000 -f
+          if kubectl logs job/noobaa-tests-s3 --tail 10 | grep -q "Ceph Test Failed:"; then
+            exit 1
+          fi
+          if [ ${TIMEOUT} ]; then
+            echo "timed out waiting for the condition on jobs/noobaa-tests-s3"
+            exit 1
+          fi
