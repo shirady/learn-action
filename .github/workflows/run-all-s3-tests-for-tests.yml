@@ -27,17 +27,25 @@ jobs:
 #           ref: master
 #           path: 'noobaa-core'
           
-      - name: Checkout noobaa-core-copy
+#       - name: Checkout noobaa-core-copy
+#         uses: actions/checkout@v3
+#         with:
+#           repository: 'shirady/noobaa-core-copy'
+#           ref: shira-check-action
+#           path: 'noobaa-core'
+
+      - name: Checkout noobaa-core-copy-for-test
         uses: actions/checkout@v3
         with:
-          repository: 'shirady/noobaa-core-copy'
-          ref: shira-check-action
+          repository: 'shirady/noobaa-core-copy-for-test'
+          ref: master
           path: 'noobaa-core'
-        
+
       - name: Deploy minikube
         run: |
          cd ./noobaa-core
          sudo bash ./.travis/deploy_minikube.sh
+         
       - name: Build noobaa tester
         run: |
          cd ./noobaa-core
