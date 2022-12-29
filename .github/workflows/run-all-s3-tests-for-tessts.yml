@@ -1,7 +1,7 @@
 
 
 
-name: run-all-tests-job-success
+name: run-all-tests-for-test
 on: 
   push:
     branches:
@@ -17,7 +17,7 @@ on:
   
 
 jobs:
-  run-all-tests-job-success:
+  run-all-tests--for-test:
     runs-on: ubuntu-latest
     steps:
 #       - name: Checkout noobaa-core
