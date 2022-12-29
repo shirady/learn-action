@@ -78,6 +78,7 @@ jobs:
       - name: Run all S3-tests
         run: |
           set -x
+          sleep 30
           cd ./noobaa-core
           kubectl apply -f ./src/test/system_tests/noobaa-tests-s3-job.yml
           kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=1000s || TIMEOUT=true
