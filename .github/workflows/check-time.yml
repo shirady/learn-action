@@ -8,6 +8,11 @@ jobs:
     steps:
       - name: Run script
         run: |
+         set -x
+         date
          START=$(date)
+         echo START
          sleep 5s
          END=$(date)
+         date
+         echo END
