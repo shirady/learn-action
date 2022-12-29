@@ -1,0 +1,13 @@
+
+name: check-time
+on: workflow_dispatch
+
+jobs:
+  check-time:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run script
+        run: |
+         START=$(date)
+         sleep 5s
+         END=$(date)
