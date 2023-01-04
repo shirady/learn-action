@@ -35,11 +35,11 @@ jobs:
           repository: 'noobaa/noobaa-operator'
           path: 'noobaa-operator'
 
-      - name: Update kubectl context
-        run: |
-          sudo mv /root/.kube /root/.minikube $HOME
-          sudo chown -R $USER $HOME/.kube $HOME/.minikube
-          sed "s/root/home\/$USER/g" $HOME/.kube/config > tmp; mv tmp $HOME/.kube/config
+ #     - name: Update kubectl context
+ #       run: |
+ #         sudo mv /root/.kube /root/.minikube $HOME
+ #         sudo chown -R $USER $HOME/.kube $HOME/.minikube
+ #         sed "s/root/home\/$USER/g" $HOME/.kube/config > tmp; mv tmp $HOME/.kube/config
 
       - name: Build operator
         run: |
@@ -57,7 +57,7 @@ jobs:
           kubectl wait --for=condition=available backingstore/noobaa-default-backing-store --timeout=3m
           # we added th sleep since the test pool is in phase ready and condition available
           # but the free storage in the test pool is 0, and it causes all the tests to fail
-          # sleep 3m
+          sleep 3m
           cd ./noobaa-core
           kubectl apply -f ./src/test/system_tests/ceph_s3_tests/test_ceph_s3_job.yml
           kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=30m || TIMEOUT=true
