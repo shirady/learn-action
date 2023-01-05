@@ -2,7 +2,7 @@
 name: check-time-with-schedule
 on: 
   schedule:
-    - cron: "45 10 * * *"
+    - cron: "50 10 * * *"
 
 jobs:
   check-time-with-schedule:
