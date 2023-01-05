@@ -1,9 +1,13 @@
 
-name: check-time
-on: workflow_dispatch
+name: check-time-with-schedule
+on: 
+  workflow_dispatch:
+  # Run every day at 10:30 and 11:30 UTC
+  schedule:
+    - cron: "30 10,11 * * *"
 
 jobs:
-  check-time:
+  check-time-with-schedule:
     runs-on: ubuntu-latest
     steps:
       - name: Run script
@@ -14,4 +18,3 @@ jobs:
          sleep 5s
          END=$(date)
          echo ${END}
-         echo END ${END} START ${START}
