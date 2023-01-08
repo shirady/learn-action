@@ -48,12 +48,20 @@ jobs:
 
       - name: Install noobaa system
         run: |
+         MAX_ITERATIONS=20
+         counter=0
          cd ./noobaa-operator
          ./build/_output/bin/noobaa-operator crd create
          ./build/_output/bin/noobaa-operator operator install
          ./build/_output/bin/noobaa-operator system create  --db-resources='{ "limits": {"cpu": "800m","memory": "1G"}, "requests": {"cpu": "800m","memory": "1G"}}' --core-resources='{ "limits": {"cpu": "300m","memory": "1G"}, "requests": {"cpu": "300m","memory": "1G"}}' --endpoint-resources='{ "limits": {"cpu": "500m","memory": "1G"}, "requests": {"cpu": "500m","memory": "1G"}}' --noobaa-image='noobaa-core:s3-tests'
-         ./build/_output/bin/noobaa-operator status
-
+         while true; do
+         ((counter++))
+         kubectl get pods
+         sleep 1m
+         kubectl describe pod $(kgp | grep endpoint | awk '{ print $1}')
+         done
+        
+        
       - name: Run Ceph s3-tests
         run: |
           set -x
