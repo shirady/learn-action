@@ -70,7 +70,7 @@ jobs:
           fi
           kubectl get pods || true
           sleep 1m
-          kubectl describe pod $(kgp | grep endpoint | awk '{ print $1}') || true
+          kubectl describe pod || true
          done
         
       - name: Run Ceph s3-tests
