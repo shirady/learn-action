@@ -55,13 +55,23 @@ jobs:
          ./build/_output/bin/noobaa-operator crd create
          ./build/_output/bin/noobaa-operator operator install
          ./build/_output/bin/noobaa-operator system create  --db-resources='{ "limits": {"cpu": "800m","memory": "1G"}, "requests": {"cpu": "800m","memory": "1G"}}' --core-resources='{ "limits": {"cpu": "300m","memory": "1G"}, "requests": {"cpu": "300m","memory": "1G"}}' --endpoint-resources='{ "limits": {"cpu": "500m","memory": "1G"}, "requests": {"cpu": "500m","memory": "1G"}}' --noobaa-image='noobaa-core:s3-tests'
-         while true; do
-         ((counter++))
-         kubectl get pods
-         sleep 1m
-         kubectl describe pod $(kgp | grep endpoint | awk '{ print $1}') || true
-         done
         
+      - name: Check noobaa resources
+        run: |
+         set -x
+         cd ./noobaa-operator
+         MAX_ITERATIONS=20
+         counter=0
+         while true; do
+           let "counter=counter+1"
+           if [ "$counter" -ge "$MAX_ITERATIONS" ]; then
+            echo "Max iterations reached. Exiting loop."
+            break
+          fi
+          kubectl get pods || true
+          sleep 1m
+          kubectl describe pod $(kgp | grep endpoint | awk '{ print $1}') || true
+         done
         
       - name: Run Ceph s3-tests
         run: |
