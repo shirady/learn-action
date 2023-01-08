@@ -12,7 +12,7 @@ jobs:
        set -x
        counter=0
        echo ${counter}
-       ((counter++))
+       let "counter=counter+1"
        echo ${counter}
-       ((counter++))
+       let "counter=counter+1"
        echo ${counter}
