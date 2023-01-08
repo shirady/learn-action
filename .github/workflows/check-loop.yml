@@ -1,0 +1,23 @@
+name: check-loop
+on: workflow_dispatch
+
+jobs:
+  check-loop:
+    runs-on: ubuntu-latest
+    steps:
+    - name: My check
+      run: |
+       MAX_ITERATIONS=20
+       counter=0
+       set -x
+       while true; do
+         ((counter++))
+         if [ "$counter" -ge "$MAX_ITERATIONS" ]; then
+          echo "Max iterations reached. Exiting loop."
+          break
+        fi
+        kubectl get pods
+        sleep 1m
+        kubectl describe pod $(kgp | grep endpoint | awk '{ print $1}') || true
+       done
+       
