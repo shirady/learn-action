@@ -12,7 +12,7 @@ jobs:
        set -x
        while true; do
          let "counter=counter+1"
-         if [ ${counter} -ge ${$MAX_ITERATIONS} ]; then
+         if [ "$counter" -ge "$MAX_ITERATIONS" ]; then
           echo "Max iterations reached. Exiting loop."
           break
         fi
