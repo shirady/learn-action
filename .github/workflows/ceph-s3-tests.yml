@@ -49,7 +49,7 @@ jobs:
       - name: Install noobaa system
         run: |
          cd ./noobaa-operator
-         ./build/_output/bin/noobaa-operator install --mini --noobaa-image='noobaa-core:s3-tests'
+         ./build/_output/bin/noobaa-operator install --noobaa-image='noobaa-core:s3-tests'
 
       - name: Run Ceph s3-tests
         run: |
