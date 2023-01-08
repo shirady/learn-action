@@ -48,6 +48,7 @@ jobs:
 
       - name: Install noobaa system
         run: |
+         set -x
          MAX_ITERATIONS=20
          counter=0
          cd ./noobaa-operator
@@ -58,7 +59,7 @@ jobs:
          ((counter++))
          kubectl get pods
          sleep 1m
-         kubectl describe pod $(kgp | grep endpoint | awk '{ print $1}')
+         kubectl describe pod $(kgp | grep endpoint | awk '{ print $1}') || true
          done
         
         
