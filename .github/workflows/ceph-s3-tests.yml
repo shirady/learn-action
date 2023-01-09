@@ -54,7 +54,7 @@ jobs:
          cd ./noobaa-operator
          ./build/_output/bin/noobaa-operator crd create
          ./build/_output/bin/noobaa-operator operator install
-         ./build/_output/bin/noobaa-operator system create  --db-resources='{ "limits": {"cpu": "400m","memory": "1G"}, "requests": {"cpu": "400m","memory": "1G"}}' --core-resources='{ "limits": {"cpu": "300m","memory": "1G"}, "requests": {"cpu": "300m","memory": "1G"}}' --endpoint-resources='{ "limits": {"cpu": "900m","memory": "1G"}, "requests": {"cpu": "900m","memory": "1G"}}' --noobaa-image='noobaa-core:s3-tests'
+         ./build/_output/bin/noobaa-operator system create  --db-resources='{ "limits": {"cpu": "400m","memory": "1G"}, "requests": {"cpu": "400m","memory": "1G"}}' --core-resources='{ "limits": {"cpu": "300m","memory": "1G"}, "requests": {"cpu": "300m","memory": "1G"}}' --endpoint-resources='{ "limits": {"cpu": "1G","memory": "1G"}, "requests": {"cpu": "1G","memory": "1G"}}' --noobaa-image='noobaa-core:s3-tests'
         
       - name: Check noobaa resources
         run: |
