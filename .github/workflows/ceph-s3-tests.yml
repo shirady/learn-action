@@ -24,11 +24,6 @@ jobs:
          cd ./noobaa-core
          sudo bash ./.travis/deploy_minikube.sh
 
-      - name: Check minikube configuration #new
-        run: |
-         set -x
-         minikube config view
-
       - name: Build noobaa tester
         run: |
          cd ./noobaa-core
