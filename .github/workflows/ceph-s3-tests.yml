@@ -11,6 +11,7 @@ jobs:
 #           repository: 'noobaa/noobaa-core'
 #           path: 'noobaa-core'
 
+# change this step to the above one
       - name: Checkout noobaa-core
         uses: actions/checkout@v3
         with:
@@ -22,6 +23,11 @@ jobs:
         run: |
          cd ./noobaa-core
          sudo bash ./.travis/deploy_minikube.sh
+
+      - name: Check minikube configuration #new
+        run: |
+         set -x
+         minikube config view
 
       - name: Build noobaa tester
         run: |
