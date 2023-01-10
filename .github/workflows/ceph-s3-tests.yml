@@ -18,23 +18,11 @@ jobs:
           repository: 'shirady/noobaa-core'
           path: 'noobaa-core'
           ref: s3-tests
-          
-      - name: Checkout noobaa-core-copy
-        uses: actions/checkout@v3
-        with:
-           repository: 'shirady/noobaa-core-copy-for-test'
-           path: 'noobaa-core-copy'
 
       - name: Deploy minikube
         run: |
          cd ./noobaa-core
          sudo bash ./.travis/deploy_minikube.sh
-
-# change this step to the above one
-#      - name: Deploy minikube
-#        run: |
-#         cd ./noobaa-core-copy
-#         sudo bash ./.travis/deploy_minikube.sh
 
       - name: Build noobaa tester
         run: |
