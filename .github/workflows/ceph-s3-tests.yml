@@ -25,16 +25,16 @@ jobs:
            repository: 'shirady/noobaa-core-copy-for-test'
            path: 'noobaa-core-copy'
 
-#      - name: Deploy minikube
-#        run: |
-#         cd ./noobaa-core-copy
-#         sudo bash ./.travis/deploy_minikube.sh
-
-# change this step to the above one
       - name: Deploy minikube
         run: |
          cd ./noobaa-core-copy
          sudo bash ./.travis/deploy_minikube.sh
+
+# change this step to the above one
+#      - name: Deploy minikube
+#        run: |
+#         cd ./noobaa-core-copy
+#         sudo bash ./.travis/deploy_minikube.sh
 
       - name: Build noobaa tester
         run: |
@@ -69,22 +69,22 @@ jobs:
          ./build/_output/bin/noobaa-operator operator install
          ./build/_output/bin/noobaa-operator system create  --db-resources='{ "limits": {"cpu": "200m","memory": "1G"}, "requests": {"cpu": "200m","memory": "1G"}}' --core-resources='{ "limits": {"cpu": "200m","memory": "1G"}, "requests": {"cpu": "200m","memory": "1G"}}' --endpoint-resources='{ "limits": {"cpu": "200m","memory": "1G"}, "requests": {"cpu": "200m","memory": "1G"}}' --noobaa-image='noobaa-core:s3-tests'
         
-      - name: Check noobaa resources
-        run: |
-         set -x
-         cd ./noobaa-operator
-         MAX_ITERATIONS=20
-         counter=0
-         while true; do
-           let "counter=counter+1"
-           if [ "$counter" -ge "$MAX_ITERATIONS" ]; then
-            echo "Max iterations reached. Exiting loop."
-            break
-          fi
-          kubectl get pods || true
-          sleep 1m
-          kubectl describe pod || true
-         done
+#      - name: Check noobaa resources
+#        run: |
+#         set -x
+#         cd ./noobaa-operator
+#         MAX_ITERATIONS=20
+#         counter=0
+#         while true; do
+#           let "counter=counter+1"
+#           if [ "$counter" -ge "$MAX_ITERATIONS" ]; then
+#            echo "Max iterations reached. Exiting loop."
+#            break
+#          fi
+#          kubectl get pods || true
+#          sleep 1m
+#          kubectl describe pod || true
+#         done
         
       - name: Run Ceph s3-tests
         run: |
