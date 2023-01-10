@@ -1,5 +1,8 @@
 name: ceph-s3-tests
-on: workflow_dispatch
+on: 
+ workflow_dispatch:
+ schedule:
+   - cron: "00 22,1 * * *" # Runs every day at 22:00 and 1:00 UTC
 
 jobs:
   ceph-s3-tests:
