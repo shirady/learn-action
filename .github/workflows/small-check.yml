@@ -1,7 +1,7 @@
 
 
 name: small-check
-on: workflow_dispatch
+on: [workflow_dispatch, push]
 
 jobs:
   small-check:
