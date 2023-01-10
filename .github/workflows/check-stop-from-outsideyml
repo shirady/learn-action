@@ -1,0 +1,20 @@
+
+name: check-stop-from-outside
+on: [workflow_dispatch, push, pull_request]
+
+jobs:
+  check-stop-from-outside:
+    runs-on: ubuntu-latest
+    steps:    
+    - name: My check
+      run: |
+       set -x
+       counter=0
+       echo ${counter}
+       sleep 30
+       let "counter=counter+1"
+       echo ${counter}
+       sleep 30
+       let "counter=counter+1"
+       echo ${counter}
+       sleep 30
