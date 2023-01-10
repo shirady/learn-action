@@ -27,7 +27,7 @@ jobs:
 
       - name: Deploy minikube
         run: |
-         cd ./noobaa-core-copy
+         cd ./noobaa-core
          sudo bash ./.travis/deploy_minikube.sh
 
 # change this step to the above one
