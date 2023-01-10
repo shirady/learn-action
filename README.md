@@ -1,2 +1,2 @@
 # learn-action
-mice cat
+animals
