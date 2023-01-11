@@ -1,12 +1,12 @@
 
-name: ceph-s3-tests
+name: check-resources
 on: 
  workflow_dispatch:
  schedule:
    - cron: "00 22,1 * * *" # Runs every day at 22:00 and 1:00 UTC
 
 jobs:
-  ceph-s3-tests:
+  check-resources:
     runs-on: ubuntu-latest
     steps:
 #       - name: Checkout noobaa-core
