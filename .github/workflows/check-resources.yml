@@ -85,7 +85,7 @@ jobs:
          kubectl wait --for=condition=available backingstore/noobaa-default-backing-store --timeout=3m
          sleep 3m
          kubectl get nodes
-         kubectl describe nodes minikube
+         kubectl describe nodes $(k get nodes | awk 'NR==2 { print $1}')
         
 #       - name: Run Ceph s3-tests
 #         run: |
