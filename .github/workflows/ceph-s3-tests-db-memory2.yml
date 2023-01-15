@@ -53,8 +53,6 @@ jobs:
       - name: Install noobaa system
         run: |
          set -x
-         MAX_ITERATIONS=20
-         counter=0
          cd ./noobaa-operator
          ./build/_output/bin/noobaa-operator crd create
          ./build/_output/bin/noobaa-operator operator install
@@ -70,7 +68,7 @@ jobs:
          set -x
          cd ./noobaa-operator
          # MAX_ITERATIONS=20
-         MAX_ITERATIONS=1
+         MAX_ITERATIONS=2
          counter=0
          while true; do
            let "counter=counter+1"
@@ -106,3 +104,8 @@ jobs:
             echo "The s3 tests did not run!"
             exit 1
           fi
+
+      - name: Check k8s events
+        run: |
+          set -x
+          kubectl get events --sort-by='.metadata.creationTimestamp' -A
