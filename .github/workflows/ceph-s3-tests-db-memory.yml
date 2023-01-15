@@ -1,11 +1,11 @@
-name: ceph-s3-tests
+name: ceph-s3-tests-db-memory
 on: 
  workflow_dispatch:
 # schedule:
 #   - cron: "00 22,1 * * *" # Runs every day at 22:00 and 1:00 UTC
 
 jobs:
-  ceph-s3-tests:
+  ceph-s3-tests-db-memory:
     runs-on: ubuntu-latest
     steps:
 #       - name: Checkout noobaa-core
@@ -20,7 +20,7 @@ jobs:
         with:
           repository: 'shirady/noobaa-core'
           path: 'noobaa-core'
-          ref: s3-tests
+          ref: s3-tests-update
 
       - name: Deploy minikube
         run: |
@@ -59,7 +59,7 @@ jobs:
          ./build/_output/bin/noobaa-operator crd create
          ./build/_output/bin/noobaa-operator operator install
          ./build/_output/bin/noobaa-operator system create  \
-         --db-resources='{ "limits": {"cpu": "200m","memory": "1G"}, "requests": {"cpu": "200m","memory": "1G"}}' \
+         --db-resources='{ "limits": {"cpu": "200m","memory": "1G"}, "requests": {"cpu": "200m","memory": "2G"}}' \
          --core-resources='{ "limits": {"cpu": "200m","memory": "1G"}, "requests": {"cpu": "200m","memory": "1G"}}' \
          --endpoint-resources='{ "limits": {"cpu": "200m","memory": "1G"}, "requests": {"cpu": "200m","memory": "1G"}}' \
          --noobaa-image='noobaa-core:s3-tests'
