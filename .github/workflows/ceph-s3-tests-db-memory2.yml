@@ -1,11 +1,11 @@
-name: ceph-s3-tests-db-memory
+name: ceph-s3-tests-db-memory2
 on: 
  workflow_dispatch:
 # schedule:
 #   - cron: "00 22,1 * * *" # Runs every day at 22:00 and 1:00 UTC
 
 jobs:
-  ceph-s3-tests-db-memory:
+  ceph-s3-tests-db-memory2:
     runs-on: ubuntu-latest
     steps:
 #       - name: Checkout noobaa-core
@@ -63,24 +63,24 @@ jobs:
          --core-resources='{ "limits": {"cpu": "200m","memory": "1G"}, "requests": {"cpu": "200m","memory": "1G"}}' \
          --endpoint-resources='{ "limits": {"cpu": "200m","memory": "1G"}, "requests": {"cpu": "200m","memory": "1G"}}' \
          --noobaa-image='noobaa-core:s3-tests'
-         ./build/_output/bin/noobaa-operator status
+#         ./build/_output/bin/noobaa-operator status
         
-#      - name: Check noobaa resources
-#        run: |
-#         set -x
-#         cd ./noobaa-operator
-#         MAX_ITERATIONS=20
-#         counter=0
-#         while true; do
-#           let "counter=counter+1"
-#           if [ "$counter" -ge "$MAX_ITERATIONS" ]; then
-#            echo "Max iterations reached. Exiting loop."
-#            break
-#          fi
-#          kubectl get pods || true
-#          sleep 1m
-#          kubectl describe pod || true
-#         done
+      - name: Check noobaa resources
+        run: |
+         set -x
+         cd ./noobaa-operator
+         MAX_ITERATIONS=20
+         counter=0
+         while true; do
+           let "counter=counter+1"
+           if [ "$counter" -ge "$MAX_ITERATIONS" ]; then
+            echo "Max iterations reached. Exiting loop."
+            break
+          fi
+          kubectl get pods || true
+          sleep 1m
+          kubectl describe pod || true
+         done
         
       - name: Run Ceph s3-tests
         run: |
