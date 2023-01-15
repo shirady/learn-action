@@ -59,17 +59,18 @@ jobs:
          ./build/_output/bin/noobaa-operator crd create
          ./build/_output/bin/noobaa-operator operator install
          ./build/_output/bin/noobaa-operator system create  \
-         --db-resources='{ "limits": {"cpu": "200m","memory": "1G"}, "requests": {"cpu": "200m","memory": "2G"}}' \
+         --db-resources='{ "limits": {"cpu": "200m","memory": "2G"}, "requests": {"cpu": "200m","memory": "2G"}}' \
          --core-resources='{ "limits": {"cpu": "200m","memory": "1G"}, "requests": {"cpu": "200m","memory": "1G"}}' \
          --endpoint-resources='{ "limits": {"cpu": "200m","memory": "1G"}, "requests": {"cpu": "200m","memory": "1G"}}' \
          --noobaa-image='noobaa-core:s3-tests'
-#         ./build/_output/bin/noobaa-operator status
+         ./build/_output/bin/noobaa-operator status
         
       - name: Check noobaa resources
         run: |
          set -x
          cd ./noobaa-operator
-         MAX_ITERATIONS=20
+         # MAX_ITERATIONS=20
+         MAX_ITERATIONS=1
          counter=0
          while true; do
            let "counter=counter+1"
