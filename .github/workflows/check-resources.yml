@@ -21,7 +21,7 @@ jobs:
         with:
           repository: 'shirady/noobaa-core'
           path: 'noobaa-core'
-          ref: s3-tests
+#          ref: s3-tests
 
       - name: Deploy minikube
         run: |
