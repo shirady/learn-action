@@ -92,6 +92,8 @@ jobs:
           kubectl apply -f ./src/test/system_tests/ceph_s3_tests/test_ceph_s3_job.yml
           kubectl wait --for=condition=complete job/noobaa-tests-s3 --timeout=30m || TIMEOUT=true
           kubectl logs job/noobaa-tests-s3 --tail 10000 -f
+          echo "K8S Events"
+          kubectl get events --sort-by='.metadata.creationTimestamp' -A
           if kubectl logs job/noobaa-tests-s3 | grep -q "Ceph Test Failed:"; then
             echo "At least one test failed!"
             exit 1
