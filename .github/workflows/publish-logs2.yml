@@ -9,10 +9,7 @@ jobs:
     - run: |
        set -x
        mkdir hello
-       pwd
-       ls -l
        touch world.txt
-       ls -l
        echo hello > hello/world.txt
        ls -l
     - uses: actions/upload-artifact@v3
