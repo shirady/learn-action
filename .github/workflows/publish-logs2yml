@@ -1,4 +1,4 @@
-name: publish-logs
+name: publish-logs2
 on: workflow_dispatch
 
 jobs:
