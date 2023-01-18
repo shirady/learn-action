@@ -1,15 +1,14 @@
-name: check-stop
-# on: [workflow_dispatch, push, pull_request]
+name: check-stop2
 on: workflow_dispatch
+concurrency:
+ group: ${{ github.workflow }}-${{ github.ref }}
+ cancel-in-progress: true
 
 
 jobs:
-  check-stop:
+  check-stop2:
     runs-on: ubuntu-latest
     steps:
-    - name: Cancel Previous Runs
-      uses: styfle/cancel-workflow-action@0.11.0
-    
     - name: My check
       run: |
        set -x
