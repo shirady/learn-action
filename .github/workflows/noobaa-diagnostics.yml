@@ -88,10 +88,10 @@ jobs:
          mkdir -p ${DIR_TO_SAVE_ON_RUNNER} ${DIR_TO_SAVE_ON_RUNNER}
          cd ./noobaa-operator
          ./build/_output/bin/noobaa-operator diagnose --db-dump --dir=${DIR_TO_SAVE_ON_RUNNER}
-         GH_NB_DB_DUMP=$(ls ${CUR_PATH}/{DIR_TO_SAVE_ON_RUNNER} | grep noobaa_db_dump)
-         GH_NB_DIAGNOSTICS=$(ls ${CUR_PATH}/{DIR_TO_SAVE_ON_RUNNER} | grep noobaa_diagnostics)
-         mv ${GH_NB_DB_DUMP} ${GH_NB_DIAGNOSTICS} ${CUR_PATH}/{DIR_TO_ARAVE_ARTIFACT}
+         GH_NB_DB_DUMP=$(ls ${CUR_PATH}/${DIR_TO_SAVE_ON_RUNNER} | grep noobaa_db_dump)
+         GH_NB_DIAGNOSTICS=$(ls ${CUR_PATH}/${DIR_TO_SAVE_ON_RUNNER} | grep noobaa_diagnostics)
+         mv ${GH_NB_DB_DUMP} ${GH_NB_DIAGNOSTICS} ${CUR_PATH}/${DIR_TO_ARAVE_ARTIFACT}
          uses: actions/upload-artifact@v3
           with:
           name: noobaa_diagnostics_and_db_dump
-          path: ${CUR_PATH}/{DIR_TO_ARAVE_ARTIFACT}
+          path: ${CUR_PATH}/${DIR_TO_ARAVE_ARTIFACT}
