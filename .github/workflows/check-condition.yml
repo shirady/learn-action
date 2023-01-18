@@ -1,0 +1,13 @@
+name: check-condition
+on: workflow_dispatch
+
+jobs:
+  check-something:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Always
+      if: ${{ always() }}
+      run: echo always
+    - name: Failure
+      if: ${{ failure() }}
+      run: echo always
