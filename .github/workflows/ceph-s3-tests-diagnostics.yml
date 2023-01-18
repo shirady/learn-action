@@ -83,9 +83,15 @@ jobs:
         run: |
          set -x
          mkdir -p noobaa_diagnostics all_logs
+         cd ./noobaa_diagnostics
+         DIR_TO_SAVE=$(pwd)
+         cd ../
+         pwd
          cd ./noobaa-operator
-         ./build/_output/bin/noobaa-operator diagnose --db-dump --dir='noobaa_diagnostics'
+         ./build/_output/bin/noobaa-operator diagnose --db-dump --dir=${DIR_TO_SAVE}
          cd ../noobaa_diagnostics
+         ls
+         pwd
          GH_NB_DB_DUMP=$(ls | grep noobaa_db_dump)
          GH_NB_DIAGNOSTICS=$(ls | grep noobaa_diagnostics)
          cd ../
