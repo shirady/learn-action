@@ -1,0 +1,17 @@
+name: publish-logs
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout noobaa-core
+      uses: actions/checkout@v3
+    - name: Generate logs
+      run: my_echo.sh
+    - name: Publish logs as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: logs
+        path: .
+
