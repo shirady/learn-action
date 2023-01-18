@@ -6,10 +6,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - run: mkdir hello
-    - run: pwd
-    - run: echo hello > path/to/artifact/world.txt
+    - run: |
+       set -x
+       mkdir hello
+       pwd
+       echo hello > learn-action/world.txt
+       ls -l
     - uses: actions/upload-artifact@v3
       with:
        name: my-artifact
-       path: path/to/artifact/world.txt
+       path: learn-action/world.txt
