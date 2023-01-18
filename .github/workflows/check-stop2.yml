@@ -12,6 +12,7 @@ jobs:
     - name: My check
       run: |
        set -x
+       echo ${{ github.ref }}
        counter=0
        echo ${counter}
        sleep 30
