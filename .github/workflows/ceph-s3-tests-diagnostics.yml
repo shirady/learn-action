@@ -81,6 +81,16 @@ jobs:
       - name: Save atrifacts of noobaa diagnostics
         if: ${{ always() }}
         run: |
-         mkdir -p noobaa-diagnostics
+         set -x
+         mkdir -p noobaa_diagnostics all_logs
          cd ./noobaa-operator
-         ./build/_output/bin/noobaa-operator diagnose --db-dump --dir='noobaa-diagnostics'
+         ./build/_output/bin/noobaa-operator diagnose --db-dump --dir='noobaa_diagnostics'
+         cd ../noobaa_diagnostics
+         GH_NB_DB_DUMP=$(ls | grep noobaa_db_dump)
+         GH_NB_DIAGNOSTICS=$(ls | grep noobaa_diagnostics)
+         cd ../
+         mv ${GH_NB_DB_DUMP} ${GH_NB_DIAGNOSTICS} ./all_logs
+         uses: actions/upload-artifact@v3
+          with:
+          name: my-artifact
+          path: all_logs
