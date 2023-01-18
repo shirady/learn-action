@@ -1,0 +1,14 @@
+name: check-ids
+run-name: ${{ github.actor }} running test job
+on: workflow_dispatch
+
+jobs:
+  check-ids-run:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Output run_id
+      id: output_run_id
+      shell: bash
+      run: |
+       run_id=${{ github.run_id }}
+       echo "::set-output name=run_id::$run_id"
