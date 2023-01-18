@@ -1,0 +1,15 @@
+name: publish-logs
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - run: mkdir hello
+    - run: pwd
+    - run: echo hello > path/to/artifact/world.txt
+    - uses: actions/upload-artifact@v3
+      with:
+       name: my-artifact
+       path: path/to/artifact/world.txt
