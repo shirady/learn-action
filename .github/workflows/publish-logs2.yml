@@ -13,7 +13,7 @@ jobs:
        ls -l
        touch world.txt
        ls -l
-       echo hello > learn-action/world.txt
+       echo hello > hello/world.txt
        ls -l
     - uses: actions/upload-artifact@v3
       with:
