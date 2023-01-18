@@ -10,6 +10,9 @@ jobs:
        set -x
        mkdir hello
        pwd
+       ls -l
+       touch world.txt
+       ls -l
        echo hello > learn-action/world.txt
        ls -l
     - uses: actions/upload-artifact@v3
