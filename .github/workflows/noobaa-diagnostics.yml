@@ -78,15 +78,15 @@ jobs:
 #             exit 1
 #           fi
           
-      - name: Save atrifacts of noobaa diagnostics
-        if: ${{ always() }
+      - name: Save logs
+        if: ${{ always() }}
         run: |
          set -x
-         DIR_TO_SAVE=noobaa_diagnostics_and_db_dump
+         DIR_TO_SAVE=logs
          mkdir -p ${DIR_TO_SAVE}
          cd ./noobaa-operator
          ./build/_output/bin/noobaa-operator diagnose --db-dump --dir=${DIR_TO_SAVE}
          uses: actions/upload-artifact@v3
           with:
-          name: noobaa_diagnostics_and_db_dump
-          path: ${DIR_TO_SAVE}
+          name: logs
+          path: logs
