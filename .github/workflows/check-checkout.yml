@@ -1,0 +1,13 @@
+name: check-checkout
+on: workflow_dispatch
+
+jobs:
+  check-checkout:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout noobaa-operator
+      uses: actions/checkout@v3
+      with:
+        repository: 'noobaa/noobaa-operator'
+        path: 'noobaa-operator'
+        ref: 28960d4dbbba612d1a3e53245791076c11632b60
