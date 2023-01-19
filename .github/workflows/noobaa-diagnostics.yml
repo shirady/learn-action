@@ -78,15 +78,18 @@ jobs:
 #             exit 1
 #           fi
           
-      - name: Save logs
+      - name: Collect logs
         if: ${{ always() }}
         run: |
          set -x
-         DIR_TO_SAVE=logs
-         mkdir -p ${DIR_TO_SAVE}
+         mkdir -p my_logs
          cd ./noobaa-operator
-         ./build/_output/bin/noobaa-operator diagnose --db-dump --dir=${DIR_TO_SAVE}
-         uses: actions/upload-artifact@v3
-          with:
-          name: logs
-          path: logs
+         ./build/_output/bin/noobaa-operator diagnose --db-dump --dir=my_logs
+         cd ../my_logs
+         pwd
+         ls
+      - name: Save logs
+      - uses: actions/upload-artifact@v3
+        with:
+         name: my_logs
+         path: my_logs
