@@ -3,7 +3,7 @@ on: workflow_dispatch
 
 
 jobs:
-  small-check:
+  check-timeout:
     runs-on: ubuntu-latest
     timeout-minutes: 4
     steps:
