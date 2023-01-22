@@ -1,0 +1,14 @@
+name: check-concurrency
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  check-concurrency:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+    - name: My check
+      run: |
+       set -x
+       sleep 5m
