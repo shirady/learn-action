@@ -9,3 +9,7 @@ jobs:
       - name: Get Current Date
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
+      - name: Prepare
+        run: |
+          VERSION="${{ steps.date.outputs.date }}"
+          echo ${VERSION}
