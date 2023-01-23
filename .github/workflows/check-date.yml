@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Get Current Date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
+        run: echo "{name}={$(date +'%Y%m%d')}" >> $GITHUB_OUTPUT
       - name: Prepare
         run: |
           VERSION="${{ steps.date.outputs.date }}"
