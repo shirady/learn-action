@@ -1,0 +1,11 @@
+name: check-date
+on: workflow_dispatch
+
+
+jobs:
+  check-date:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Current Date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d')"
