@@ -10,7 +10,7 @@ jobs:
         id: date
         run: |
          my_date=$(date +'%Y%m%d')
-         echo "{name}={my_date}" >> $GITHUB_OUTPUT
+         echo "{name}={${my_date}}" >> $GITHUB_OUTPUT
       - name: Prepare
         run: |
           VERSION="${{ steps.date.outputs.date }}"
