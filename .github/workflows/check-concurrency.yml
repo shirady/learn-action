@@ -11,4 +11,6 @@ jobs:
     - name: My check
       run: |
        set -x
+       echo ${{ github.workflow }}-${{ github.ref }}
        sleep 5m
+       
