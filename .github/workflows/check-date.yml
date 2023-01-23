@@ -9,8 +9,8 @@ jobs:
       - name: Get Current Date
         id: date
         run: |
-         date=$(date +'%Y%m%d')
-         echo "{name}={date}" >> $GITHUB_OUTPUT
+         my_date=$(date +'%Y%m%d')
+         echo "{name}={my_date}" >> $GITHUB_OUTPUT
       - name: Prepare
         run: |
           VERSION="${{ steps.date.outputs.date }}"
