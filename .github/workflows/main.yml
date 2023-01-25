@@ -1,0 +1,17 @@
+name: check-input
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning' 
+        type: choice
+        options: ${{ github.ref }}
+
+jobs:
+  print-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print the input branch
+        run: echo  The tags are ${{ inputs.branch }}
