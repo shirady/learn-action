@@ -1,3 +1,4 @@
+name: print-tag
 on:
   workflow_dispatch:
     inputs:
