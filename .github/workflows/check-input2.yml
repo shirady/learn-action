@@ -1,4 +1,4 @@
-name: check-input
+name: check-input2
 on:
   workflow_dispatch:
     inputs:
@@ -10,7 +10,7 @@ on:
         options: ${{ github.ref }}
 
 jobs:
-  print-tag:
+  check-input2:
     runs-on: ubuntu-latest
     steps:
       - name: Print the input branch
