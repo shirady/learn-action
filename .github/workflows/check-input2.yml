@@ -6,10 +6,11 @@ on:
         description: 'Log level'
         required: true
         default: 'warning' 
-        type: choice
-        options:
-         - "1"
-         - "2"
+#         type: choice
+#         options:
+#          - "1"
+#          - "2"
+        options: ${{ github.ref }}
 
 jobs:
   check-input2:
