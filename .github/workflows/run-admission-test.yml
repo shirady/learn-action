@@ -26,22 +26,26 @@ jobs:
       - name: Deploy Dependencies
         run: |
           set -x
+          cd ./noobaa-operator
           sudo bash .travis/install-minikube.sh
           go get -v github.com/onsi/ginkgo/ginkgo
           go install -v github.com/onsi/ginkgo/ginkgo
           ginkgo version
       - name: Update Kubectl Context
         run: |
+          cd ./noobaa-operator
           sudo mv /root/.kube /root/.minikube $HOME
           sudo chown -R $USER $HOME/.kube $HOME/.minikube
           sed "s/root/home\/$USER/g" $HOME/.kube/config > tmp; mv tmp $HOME/.kube/config
       - name: Build NooBaa
         run: |
+          cd ./noobaa-operator
           make cli
           make image
           sudo docker tag noobaa/noobaa-operator:$(go run cmd/version/main.go) $OPERATOR_IMAGE
       - name: Install NooBaa
         run: |
+          cd ./noobaa-operator
           ./build/_output/bin/noobaa-operator -n test --mini --admission --operator-image=$OPERATOR_IMAGE install
       - name: Run Admission test
         run: make test-admission
