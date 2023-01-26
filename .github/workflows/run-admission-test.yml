@@ -10,8 +10,8 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
         with:
-          repository: 'noobaa/noobaa-core'
-          path: 'noobaa-core'
+          repository: 'shirady/noobaa-operator'
+          path: 'noobaa-operator'
           ref: backing-store-status
       - uses: actions/setup-go@v2
         with:
