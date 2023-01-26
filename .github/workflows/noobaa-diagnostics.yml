@@ -1,6 +1,6 @@
 name: Noobaa Diagnostics
-on: [push, pull_request, workflow_dispatch]
-
+# on: [push, pull_request, workflow_dispatch]
+on: workflow_dispatch
 jobs:
   noobaa-diagnostics:
     runs-on: ubuntu-latest
