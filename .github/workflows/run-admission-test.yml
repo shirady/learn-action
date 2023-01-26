@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v
+        uses: actions/checkout@v3
         with:
           repository: 'noobaa/noobaa-core'
           path: 'noobaa-core'
