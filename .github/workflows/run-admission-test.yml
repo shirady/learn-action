@@ -10,9 +10,9 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
         with:
-          repository: 'shirady/noobaa-operator'
+          repository: 'shirady/noobaa-operator-copy'
           path: 'noobaa-operator'
-          ref: backing-store-status
+          # ref: backing-store-status
       - uses: actions/setup-go@v2
         with:
           go-version: "1.18"
