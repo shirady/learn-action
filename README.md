@@ -7,3 +7,7 @@
 
 - - - - - - - 
 . . . 
+
+{::comment}
+comment text
+{:/comment}
