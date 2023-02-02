@@ -1,0 +1,91 @@
+name: Admission Webhook Tests Success
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  run-admission-test-success:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Checkout noobaa-core
+        uses: actions/checkout@v3
+        with:
+          repository: 'shirady/noobaa-core'
+          path: 'noobaa-core'
+          ref: 'backing-store-status'
+
+      - name: Checkout noobaa-operator
+        uses: actions/checkout@v3
+        with:
+          repository: 'noobaa/noobaa-operator'
+          path: 'noobaa-operator'
+        
+      - name: Setup Go on runner
+        uses: actions/setup-go@v3
+        with:
+         go-version: "1.18"
+
+      - name: Set environment variables
+        run: |
+          echo PATH=$PATH:$HOME/go/bin                           >> $GITHUB_ENV
+          echo OPERATOR_IMAGE=noobaa/noobaa-operator:integration >> $GITHUB_ENV
+          echo CHANGE_MINIKUBE_NONE_USER=true                    >> $GITHUB_ENV
+ 
+      - name: Deploy dependencies
+        run: |
+          set -x
+          cd ./noobaa-operator
+          sudo bash .travis/install-minikube.sh
+          go get -v github.com/onsi/ginkgo/ginkgo
+          go install -v github.com/onsi/ginkgo/ginkgo
+          ginkgo version
+
+      - name: Change settings for k8s and minikube
+        run: |
+          sudo mv /root/.kube /root/.minikube $HOME
+          sudo chown -R $USER $HOME/.kube $HOME/.minikube
+          sed "s/root/home\/$USER/g" $HOME/.kube/config > tmp; mv tmp $HOME/.kube/config
+
+      - name: Build noobaa image
+        run: |
+         cd ./noobaa-core
+         make noobaa NOOBAA_TAG=noobaa-core:backing-store-status
+
+      - name: Build operator image
+        run: |
+          set -x
+          cd ./noobaa-operator
+          make cli
+          make image
+          sudo docker tag noobaa/noobaa-operator:$(go run cmd/version/main.go) $OPERATOR_IMAGE
+
+      - name: Install NooBaa
+        run: |
+          set -x
+          cd ./noobaa-operator
+          ./build/_output/bin/noobaa-operator -n test --mini --admission --operator-image=$OPERATOR_IMAGE --noobaa-image='noobaa-core:backing-store-status' install
+          kubectl wait --for=condition=available backingstore/noobaa-default-backing-store --timeout=3m -n test
+
+      - name: Run Admission test
+        run: |
+          set -x
+          cd ./noobaa-operator
+          make test-admission
+
+      - name: Collect logs
+        if: ${{ always() }}
+        run: |
+         set -x
+         cd ./noobaa-operator
+         kubectl logs -n test $(kubectl get pods -n test | grep operator | awk '{ print $1}') --tail 10000
+         kubectl logs -n test $(kubectl get pods -n test | grep core | awk '{ print $1}') --tail 100000
+         ./build/_output/bin/noobaa-operator diagnose --db-dump --dir=admission-tests-logs -n test
+
+      - name: Save logs
+        if: ${{ failure() }}    
+        uses: actions/upload-artifact@v3
+        with:
+          name: admission-tests-logs
+          path: noobaa-operator/admission-tests-logs
