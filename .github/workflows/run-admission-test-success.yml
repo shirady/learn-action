@@ -87,12 +87,15 @@ jobs:
         run: |
          set -x
          cd ./noobaa-operator
-         kubectl logs -n test $(kubectl get pods -n test | grep operator | awk '{ print $1}')
-         kubectl logs -n test $(kubectl get pods -n test | grep core | awk '{ print $1}')
          ./build/_output/bin/noobaa-operator diagnose --db-dump --dir=admission-tests-logs -n test
+         kubectl logs -n test $(kubectl get pods -n test | grep operator | awk '{ print $1}') > logs_operator.txt
+         kubectl logs -n test $(kubectl get pods -n test | grep core | awk '{ print $1}') > logs_core.txt
+         ls -l
+         mv logs_operator.txt ./admission-tests-logs
+         mv logs_core.txt ./admission-tests-logs
 
       - name: Save logs
-        if: ${{ failure() }}    
+        if: ${{ always() }}    
         uses: actions/upload-artifact@v3
         with:
           name: admission-tests-logs
