@@ -68,9 +68,9 @@ jobs:
          ./build/_output/bin/noobaa-operator crd create -n test
          ./build/_output/bin/noobaa-operator operator install --operator-image=$OPERATOR_IMAGE --admission -n test
          ./build/_output/bin/noobaa-operator system create \
-         --db-resources='{ "limits": {"cpu": "100m","memory": "0.5G"}, "requests": {"cpu": "100m","memory": "0.5G"}}' \
-         --core-resources='{ "limits": {"cpu": "100m","memory": "0.5G"}, "requests": {"cpu": "100m","memory": "0.5G"}}' \
-         --endpoint-resources='{ "limits": {"cpu": "100m","memory": "0.5G"}, "requests": {"cpu": "100m","memory": "0.5G"}}' \
+         --db-resources='{ "limits": {"cpu": "100m","memory": "1G"}, "requests": {"cpu": "100m","memory": "1G"}}' \
+         --core-resources='{ "limits": {"cpu": "100m","memory": "1G"}, "requests": {"cpu": "100m","memory": "1G"}}' \
+         --endpoint-resources='{ "limits": {"cpu": "100m","memory": "1G"}, "requests": {"cpu": "100m","memory": "1G"}}' \
          --noobaa-image='noobaa-core:backing-store-status' -n test
          ./build/_output/bin/noobaa-operator status -n test
           sleep 3m
