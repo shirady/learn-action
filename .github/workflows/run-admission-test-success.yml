@@ -62,11 +62,18 @@ jobs:
           make image
           sudo docker tag noobaa/noobaa-operator:$(go run cmd/version/main.go) $OPERATOR_IMAGE
 
-      - name: Install NooBaa
+      - name: Install noobaa system
         run: |
-          set -x
-          cd ./noobaa-operator
-          ./build/_output/bin/noobaa-operator -n test --mini --admission --operator-image=$OPERATOR_IMAGE --noobaa-image='noobaa-core:backing-store-status' install
+         cd ./noobaa-operator
+         ./build/_output/bin/noobaa-operator crd create -n test
+         ./build/_output/bin/noobaa-operator operator install --operator-image=$OPERATOR_IMAGE --admission -n test
+         ./build/_output/bin/noobaa-operator system create \
+         --db-resources='{ "limits": {"cpu": "100m","memory": "0.5G"}, "requests": {"cpu": "100m","memory": "0.5G"}}' \
+         --core-resources='{ "limits": {"cpu": "100m","memory": "0.5G"}, "requests": {"cpu": "100m","memory": "0.5G"}}' \
+         --endpoint-resources='{ "limits": {"cpu": "100m","memory": "0.5G"}, "requests": {"cpu": "100m","memory": "0.5G"}}' \
+         --noobaa-image='noobaa-core:backing-store-status' -n test
+         ./build/_output/bin/noobaa-operator status -n test
+          sleep 3m
           kubectl wait --for=condition=available backingstore/noobaa-default-backing-store --timeout=3m -n test
 
       - name: Run Admission test
@@ -80,8 +87,8 @@ jobs:
         run: |
          set -x
          cd ./noobaa-operator
-         kubectl logs -n test $(kubectl get pods -n test | grep operator | awk '{ print $1}') --tail 10000
-         kubectl logs -n test $(kubectl get pods -n test | grep core | awk '{ print $1}') --tail 100000
+         kubectl logs -n test $(kubectl get pods -n test | grep operator | awk '{ print $1}')
+         kubectl logs -n test $(kubectl get pods -n test | grep core | awk '{ print $1}')
          ./build/_output/bin/noobaa-operator diagnose --db-dump --dir=admission-tests-logs -n test
 
       - name: Save logs
