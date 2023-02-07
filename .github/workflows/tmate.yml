@@ -5,5 +5,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - name: create a file
+      run: |
+       set -x
+       ls -al
+       echo hello > hello.txt
+       ls -l
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3
