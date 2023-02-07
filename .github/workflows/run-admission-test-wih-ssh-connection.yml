@@ -19,8 +19,9 @@ jobs:
       - name: Checkout noobaa-operator
         uses: actions/checkout@v3
         with:
-          repository: 'noobaa/noobaa-operator'
+          repository: 'shirady/noobaa-operator'
           path: 'noobaa-operator'
+          ref: 'backing-store-status'
         
       - name: Setup Go on runner
         uses: actions/setup-go@v3
