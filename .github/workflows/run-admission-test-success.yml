@@ -1,6 +1,6 @@
 name: Admission Webhook Tests Success
-on: [push, pull_request, workflow_dispatch]
-
+# on: [push, pull_request, workflow_dispatch]
+on: workflow_dispatch
 jobs:
   run-admission-test-success:
     runs-on: ubuntu-latest
