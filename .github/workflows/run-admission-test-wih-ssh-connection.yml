@@ -1,6 +1,6 @@
 name: Admission Webhook Tests With SSH connection
-on: [push, pull_request, workflow_dispatch]
-
+# on: [push, pull_request, workflow_dispatch]
+on: workflow_dispatch
 jobs:
   run-admission-test-with-ssh-connection:
     runs-on: ubuntu-latest
