@@ -14,6 +14,6 @@ jobs:
     steps:
       - name: Sleep and echo
         run: |
-         sleep 1m
+         sleep 15s
          echo "hello world"
-         slep 1m
+         sleep 15s
