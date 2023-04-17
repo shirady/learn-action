@@ -1,0 +1,19 @@
+name: check-exclude
+on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+  pull_request:
+    paths-ignore:
+      - 'docs/**'
+
+
+jobs:
+  check-exclude:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sleep and echo
+        run: |
+         sleep 1m
+         echo "hello world"
+         slep 1m
