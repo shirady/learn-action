@@ -33,3 +33,5 @@ echo $exit_code
 
 # source:
 # https://stackoverflow.com/questions/55073453/wait-for-kubernetes-job-to-complete-on-either-failure-success-using-command-line
+
+
