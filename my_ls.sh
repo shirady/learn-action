@@ -5,3 +5,6 @@ export PS4='\e[36m+ ${FUNCNAME:-main}\e[0m@\e[32m${BASH_SOURCE}:\e[35m${LINENO} 
 ls -al
 
 
+
+
+
