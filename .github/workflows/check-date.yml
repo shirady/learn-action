@@ -8,6 +8,6 @@ jobs:
     steps:
       - name: Get Current Date
         id: date
-        run: echo "date::$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
       - name: Print
         run: echo ${{ steps.date.outputs.date }}
