@@ -1,11 +1,11 @@
 name: check-exclude
 on:
-  push:
-    paths-ignore:
-      - 'docs/**'
-  pull_request:
-    paths-ignore:
-      - 'docs/**'
+#  push:
+#    paths-ignore:
+#      - 'docs/**'
+#  pull_request:
+#    paths-ignore:
+#      - 'docs/**'
   workflow_dispatch:
 
 
