@@ -23,4 +23,4 @@ jobs:
         if: ${{ github.event.inputs.tag != '' }}
         run: echo suffix="-${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
       - name: Print Suffix
-        run: echo ${{ steps.date.outputs.suffix }}
+        run: echo ${{ steps.suffix.outputs.suffix }}
