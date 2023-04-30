@@ -16,5 +16,11 @@ jobs:
       - name: Get Current Date
         id: date
         run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
-      - name: Print
+      - name: Print Date
         run: echo ${{ steps.date.outputs.date }}
+      - name: Prepare Suffix
+        id: suffix
+        if: ${{ github.event.inputs.tag != '' }}
+        run: echo suffix="-${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+      - name: Print Suffix
+        run: echo ${{ steps.date.outputs.suffix }}
