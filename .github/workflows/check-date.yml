@@ -1,6 +1,13 @@
 name: check-date
-on: workflow_dispatch
-
+on: 
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to Build From'
+        required: true
+      tag:
+        description: 'Additional tag for the build (such as alpha, beta, etc.) - Optional'
+        default: ''
 
 jobs:
   check-date:
