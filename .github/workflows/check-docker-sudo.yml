@@ -10,5 +10,5 @@ jobs:
 
       - name: Check
         run: |
-          docker manifest inspect noobaa/noobaa-core:master-20230501 > /dev/null || exit 1
+          sudo docker manifest inspect noobaa/noobaa-core:master-20230501 > /dev/null || exit 1
           echo "::found version master-20230501, updating image version"
