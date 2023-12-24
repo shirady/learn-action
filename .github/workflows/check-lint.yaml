@@ -1,0 +1,19 @@
+name: check-lint
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  check-lint:
+    runs-on: ubuntu-latest
+    steps:
+       - name: Checkout noobaa-core
+         uses: actions/checkout@v3
+         with:
+           repository: 'noobaa/noobaa-core'
+           ref: master
+           path: 'noobaa-core'
+       - name: Run linter on src directory
+         run: | 
+          set -x
+          cd ./noobaa-core
+          npm run lint
+          eslint src --quiet
