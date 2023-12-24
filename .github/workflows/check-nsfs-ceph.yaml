@@ -5,10 +5,10 @@ on: workflow_dispatch
 jobs:
   nsfs-ceph-s3-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
-      cancel-in-progress: true
+    # timeout-minutes: 90
+    # concurrency:
+    #   group: ${{ github.workflow }}-${{ github.ref }}
+    #   cancel-in-progress: true
     steps:
       # - name: Checkout noobaa-core
       #   uses: actions/checkout@v3
