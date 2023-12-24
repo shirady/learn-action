@@ -16,7 +16,7 @@ jobs:
       #     repository: 'noobaa/noobaa-core'
       #     path: 'noobaa-core'
         
-      - name: Checkout noobaa-core-copy-for-test
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           repository: 'shirady/noobaa-core'
