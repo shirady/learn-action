@@ -17,5 +17,3 @@ jobs:
           cd ./noobaa-core
           npm install
           npm run lint
-          ls -al
-          eslint src --quiet
