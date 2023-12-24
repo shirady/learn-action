@@ -1,5 +1,6 @@
 name: nsfs-ceph-s3-tests-check
-on: [push, pull_request, workflow_dispatch]
+# on: [push, pull_request, workflow_dispatch]
+on: workflow_dispatch
 
 jobs:
   nsfs-ceph-s3-tests:
@@ -18,8 +19,8 @@ jobs:
       - name: Checkout noobaa-core-copy-for-test
         uses: actions/checkout@v3
         with:
-          repository: 'shirady/nsfs-ceph-tests'
-          ref: master
+          repository: 'shirady/noobaa-core'
+          ref: nsfs-ceph-tests
           path: 'noobaa-core'
           
       - name: Run NSFS Ceph s3-tests
