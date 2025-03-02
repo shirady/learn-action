@@ -23,11 +23,14 @@ jobs:
           ref: ci-add-client
           path: 'noobaa-core'
           
+      # - name: Run AWS SDK Clients
+      #   run: |
+      #     set -x
+      #     cd ./noobaa-core
+      #     make test-aws-sdk-clients
+
       - name: Run AWS SDK Clients
-        run: |
-          # set -x
-          # cd ./noobaa-core
-          make test-aws-sdk-clients
+        run: make test-aws-sdk-clients
 
     # Uncomment this step in case where you want to connect to the VM of this workflow using SSH.
     # Pay attention that this workflow was configured with a timeout, and you might change it for this step.  
