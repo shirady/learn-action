@@ -1,0 +1,36 @@
+name: test-aws-sdk-clients
+# on: [push, pull_request, workflow_dispatch]
+on: workflow_dispatch
+
+jobs:
+  test-aws-sdk-clients:
+    runs-on: ubuntu-latest
+    # timeout-minutes: 90
+    # concurrency:
+    #   group: ${{ github.workflow }}-${{ github.ref }}
+    #   cancel-in-progress: true
+    steps:
+      # - name: Checkout noobaa-core
+      #   uses: actions/checkout@v4
+      #   with:
+      #     repository: 'noobaa/noobaa-core'
+      #     path: 'noobaa-core'
+        
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: 'shirady/noobaa-core'
+          ref: ci-add-client
+          path: 'noobaa-core'
+          
+      - name: Run AWS SDK Clients
+        run: |
+          set -x
+          cd ./noobaa-core
+          make test-aws-sdk-clients
+
+    # Uncomment this step in case where you want to connect to the VM of this workflow using SSH.
+    # Pay attention that this workflow was configured with a timeout, and you might change it for this step.  
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
