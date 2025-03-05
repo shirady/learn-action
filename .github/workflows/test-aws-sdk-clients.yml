@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: 'shirady/noobaa-core'
-          ref: ci-add-client
+          ref: ci-add-client-with-changes
           path: 'noobaa-core'
           
       - name: Run AWS SDK Clients
