@@ -39,16 +39,28 @@ jobs:
 
       - name: Run Generate API
         id: run-gen-api
-        run: make gen-api-fail-if-dirty --always-make || exit 1
+        run: |
+          set -x
+          cd ./noobaa-operator
+          make gen-api-fail-if-dirty --always-make || exit 1
 
       - name: Run Build
         id: run-build
-        run: make build || exit 1
+        run: |
+          set -x
+          cd ./noobaa-operator
+          make build || exit 1
 
       - name: Run Test
         id: run-test
-        run: make test || exit 1
+        run: |
+          set -x
+          cd ./noobaa-operator
+          make test || exit 1
 
       - name: Run Test OLM
         id: run-test-olm
-        run: sudo env "PATH=$PATH" make test-olm || exit 1
+        run: |
+          set -x
+          cd ./noobaa-operator
+          sudo env "PATH=$PATH" make test-olm || exit 1
