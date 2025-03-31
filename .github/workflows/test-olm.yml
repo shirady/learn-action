@@ -19,7 +19,7 @@ jobs:
         with:
           repository: 'shirady/noobaa-operator'
           ref: check-certs
-          # path: 'noobaa-operator'
+          path: 'noobaa-operator'
           go-version: "1.23"
 
       # - name: checkout
@@ -31,6 +31,8 @@ jobs:
       - name: Deploy Dependencies
         id: deploy
         run: |
+          set -x
+          cd ./noobaa-operator
           bash .travis/install-tools.sh
           bash .travis/install-python.sh
           sudo bash .travis/install-minikube.sh
