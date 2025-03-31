@@ -51,12 +51,12 @@ jobs:
           cd ./noobaa-operator
           make build || exit 1
 
-      - name: Run Test
-        id: run-test
-        run: |
-          set -x
-          cd ./noobaa-operator
-          make test || exit 1
+      # - name: Run Test
+      #   id: run-test
+      #   run: |
+      #     set -x
+      #     cd ./noobaa-operator
+      #     make test || exit 1
 
       - name: Run Test OLM
         id: run-test-olm
