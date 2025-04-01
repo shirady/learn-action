@@ -39,15 +39,24 @@ jobs:
 
       - name: Run Build CLI
         id: run-build-cli
-        run: make cli || exit 1
+        run: |
+         set -x
+         cd ./noobaa-operator
+         make cli || exit 1
 
       - name: Run Build Image
         id: run-build-image
-        run: make image || exit 1
+        run: |
+         set -x
+         cd ./noobaa-operator
+         make image || exit 1
 
       - name: Run Test CLI
         id: run-test-cli
-        run: sudo make test-cli-flow || exit 1
+        run: |
+         set -x
+         cd ./noobaa-operator
+         sudo make test-cli-flow || exit 1
         timeout-minutes: 45
 
       # Uncomment this step in case where you want to connect to the VM of this workflow using SSH.
