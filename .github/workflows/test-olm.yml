@@ -64,3 +64,9 @@ jobs:
           set -x
           cd ./noobaa-operator
           sudo env "PATH=$PATH" make test-olm || exit 1
+
+      # Uncomment this step in case where you want to connect to the VM of this workflow using SSH.
+      # Pay attention that this workflow was configured with a timeout, and you might change it for this step.
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
