@@ -1,0 +1,57 @@
+name: Test CLI Flow
+on: [workflow_dispatch]
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+  GO111MODULE: "on"
+  GOPROXY: "https://proxy.golang.org"
+  KUBERNETES_VERSION: "v1.17.3"
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: 'shirady/noobaa-operator'
+          ref: check-certs-ci-test
+          path: 'noobaa-operator'
+          go-version: "1.23"
+
+      # - name: checkout
+      #   uses: actions/checkout@v4
+      # - uses: actions/setup-go@v5
+      #   with:
+      #     go-version: "1.23"
+
+      - name: Deploy Dependencies
+        id: deploy
+        run: |
+          set -x
+          cd ./noobaa-operator
+          bash .travis/install-tools.sh
+          bash .travis/install-python.sh
+          sudo bash .travis/install-minikube.sh
+
+      - name: Run Build CLI
+        id: run-build-cli
+        run: make cli || exit 1
+
+      - name: Run Build Image
+        id: run-build-image
+        run: make image || exit 1
+
+      - name: Run Test CLI
+        id: run-test-cli
+        run: sudo make test-cli-flow || exit 1
+        timeout-minutes: 45
+
+      # Uncomment this step in case where you want to connect to the VM of this workflow using SSH.
+      # Pay attention that this workflow was configured with a timeout, and you might change it for this step.
+      # - name: Setup tmate session
+      #   if: ${{ failure() }}
+      #   uses: mxschmitt/action-tmate@v3
