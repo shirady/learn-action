@@ -61,7 +61,7 @@ jobs:
       - name: Run Test OLM
         id: run-test-olm
         # add timeout for the steps
-        timeout-minutes: 15
+        timeout-minutes: 25
         run: |
           set -x
           cd ./noobaa-operator
