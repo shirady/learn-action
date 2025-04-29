@@ -1,0 +1,18 @@
+name: Check Slack Webhook 2
+on: [push, pull_request, workflow_dispatch]
+
+
+jobs:
+  check-slack-webhook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello
+        run: echo hello
+    
+      - name: Message the result
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "(Shira Tests) Run result: ${{ job.status }}"
