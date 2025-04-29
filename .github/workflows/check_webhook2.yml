@@ -8,6 +8,9 @@ jobs:
     steps:
       - name: Hello
         run: echo hello
+
+      - name: exit 1
+        run: exit 1
     
       - name: Message the result
         uses: slackapi/slack-github-action@v2.0.0
