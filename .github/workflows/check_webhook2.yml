@@ -9,8 +9,11 @@ jobs:
       - name: Hello
         run: echo hello
 
-      - name: exit 1
-        run: exit 1
+      # - name: exit 1
+      #   run: exit 1
+
+      - name: Sleep
+        run: sleep 60000
     
       - name: Message the result
         if: ${{ !success() }}
