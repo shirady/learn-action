@@ -32,5 +32,5 @@ jobs:
     
       - name: Build Image
         run: |
-          cd nnoobaa-operator
+          cd noobaa-operator
           make image IMAGE=${{ steps.prep.outputs.noobaa_tag }}
