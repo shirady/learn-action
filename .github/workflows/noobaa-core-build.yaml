@@ -23,19 +23,20 @@ jobs:
 
       - name: Login to Quay Registry
         run: echo ${{ secrets.QUAY_PASS }} | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
+
+      - name: Prepare Tags
+        id: prep
+        run: |
+          NOOBAA_TAG=quay.io/${{ secrets.QUAY_USERNAME }}/noobaa-core:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}
+          echo "noobaa_tag=${NOOBAA_TAG}" >> $GITHUB_OUTPUT
     
       - name: Build Image
       # replace aaa with env
         run: |
           cd noobaa-core
-          make noobaa NOOBAA_TAG=quay.io/${{ secrets.QUAY_USERNAME }}/noobaa-core:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}
-          docker image inspect quay.io/${{ secrets.QUAY_USERNAME }}/noobaa-core:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}
+          make noobaa NOOBAA_TAG=${{ steps.prep.outputs.noobaa_tag }}
 
-      # - name: Push Docker Images to Quay
-      #   env:
-      #     DOCKERHUB_OWNER: ${{ secrets.GHACTIONSDOCKERHUBNAME }}
-      #   run: |
-      #     cd noobaa-core
-      #     make noobaa NOOBAA_TAG=quay.io/<my-user>/noobaa-core:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}
-      #     docker push quay.io/jalbo/noobaa-core:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}
+      - name: Push Docker Images to Quay
+        run: |
+          docker push ${{ steps.prep.outputs.noobaa_tag }}
           
