@@ -1,0 +1,45 @@
+name: Manual noobaa-core Build and Push Image
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to Build From"
+        required: true
+
+jobs:
+  manual-build-and-publish-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: 'shirady/noobaa-core'
+          ref: ${{ github.event.inputs.branch }}
+          path: 'noobaa-core'
+
+      - name: Get Current Date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d')"
+
+      - name: Prepare Suffix
+        id: suffix
+        if: ${{ github.event.inputs.tag != '' }}
+        run: echo ::set-output name=suffix::"-${{ github.event.inputs.tag }}"
+    
+      - name: Build Image
+        run: |
+          cd noobaa-core
+          make noobaa NOOBAA_TAG=quay.io/<my-user>/noobaa-core:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}
+          docker image inspect quay.io/<my-user>/noobaa-core:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}
+
+      # - name: Login to DockerHub Registry
+      #   run: echo ${{ secrets.GHACTIONSDOCKERHUB }} | docker login quay.io -u ${{ secrets.GHACTIONSDOCKERHUBNAME }} --password-stdin
+
+      # - name: Push Docker Images to Quay
+      #   env:
+      #     DOCKERHUB_OWNER: ${{ secrets.GHACTIONSDOCKERHUBNAME }}
+      #   run: |
+      #     cd noobaa-core
+      #     make noobaa NOOBAA_TAG=quay.io/<my-user>/noobaa-core:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}
+      #     docker push quay.io/jalbo/noobaa-core:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}
+          
