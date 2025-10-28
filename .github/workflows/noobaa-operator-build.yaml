@@ -34,3 +34,7 @@ jobs:
         run: |
           cd noobaa-operator
           make image IMAGE=${{ steps.prep.outputs.noobaa_tag }}
+
+      - name: Push Docker Images to Quay
+        run: |
+          docker push ${{ steps.prep.outputs.noobaa_tag }}
