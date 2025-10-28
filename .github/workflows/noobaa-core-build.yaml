@@ -19,18 +19,19 @@ jobs:
 
       - name: Get Current Date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y%m%d')"
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
 
       - name: Prepare Suffix
         id: suffix
         if: ${{ github.event.inputs.tag != '' }}
-        run: echo ::set-output name=suffix::"-${{ github.event.inputs.tag }}"
+        run: echo suffix="-${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
     
       - name: Build Image
+      # replace aaa with env
         run: |
           cd noobaa-core
-          make noobaa NOOBAA_TAG=quay.io/<my-user>/noobaa-core:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}
-          docker image inspect quay.io/<my-user>/noobaa-core:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}
+          make noobaa NOOBAA_TAG=quay.io/aaa/noobaa-core:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}
+          docker image inspect quay.io/aaa/noobaa-core:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}
 
       # - name: Login to DockerHub Registry
       #   run: echo ${{ secrets.GHACTIONSDOCKERHUB }} | docker login quay.io -u ${{ secrets.GHACTIONSDOCKERHUBNAME }} --password-stdin
