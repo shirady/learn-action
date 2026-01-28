@@ -34,7 +34,10 @@ jobs:
         run: |
           cd ocs-operator
           IMAGE_BUILD_CMD=docker make ocs-operator
-          docker tag quay.io/ocs-dev/ocs-operator OCS_TAG
+
+      - name: Tag Image
+        run: |
+          docker tag quay.io/ocs-dev/ocs-operator ${{ steps.prep.outputs.ocs_tag }}
 
       - name: Push Docker Images to Quay
         run: |
