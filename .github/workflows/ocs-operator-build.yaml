@@ -38,5 +38,6 @@ jobs:
 
       - name: Push Docker Images to Quay
         run: |
+          docker image list
           docker push ${{ steps.prep.outputs.ocs_tag }}
           
