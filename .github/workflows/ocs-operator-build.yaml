@@ -31,7 +31,6 @@ jobs:
           echo "ocs_tag=${OCS_TAG}" >> $GITHUB_OUTPUT
     
       - name: Build Image
-      # replace aaa with env
         run: |
           cd ocs-operator
           IMAGE_BUILD_CMD=docker make ocs-operator
