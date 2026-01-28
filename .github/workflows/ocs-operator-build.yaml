@@ -34,7 +34,8 @@ jobs:
       # replace aaa with env
         run: |
           cd ocs-operator
-          IMAGE_BUILD_CMD=docker make ocs-operator OCS_TAG=${{ steps.prep.outputs.ocs_tag }}
+          IMAGE_BUILD_CMD=docker make ocs-operator
+          docker tag quay.io/ocs-dev/ocs-operator OCS_TAG
 
       - name: Push Docker Images to Quay
         run: |
