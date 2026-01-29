@@ -33,14 +33,17 @@ jobs:
       - name: Build Image
         run: |
           cd ocs-client-operator
-          make all
+          IMAGE_BUILD_CMD=docker make all
+          echo "docker image list"
           docker image list
 
-      # - name: Tag Image
-      #   run: |
-      #     docker tag quay.io/ocs-dev/ocs-client-operator ${{ steps.prep.outputs.ocs_tag }}
+      - name: Tag Image
+        run: |
+          docker tag quay.io/ocs-dev/ocs-client-operator ${{ steps.prep.outputs.ocs_tag }}
+          echo "docker image list"
+          docker image list
 
-      # - name: Push Docker Images to Quay
-      #   run: |
-      #     docker push ${{ steps.prep.outputs.ocs_tag }}
+      - name: Push Docker Images to Quay
+        run: |
+          docker push ${{ steps.prep.outputs.ocs_tag }}
           
