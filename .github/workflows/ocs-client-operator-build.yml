@@ -36,11 +36,11 @@ jobs:
           make all
           docker image list
 
-      - name: Tag Image
-        run: |
-          docker tag quay.io/ocs-dev/ocs-operator ${{ steps.prep.outputs.ocs_tag }}
+      # - name: Tag Image
+      #   run: |
+      #     docker tag quay.io/ocs-dev/ocs-client-operator ${{ steps.prep.outputs.ocs_tag }}
 
-      - name: Push Docker Images to Quay
-        run: |
-          docker push ${{ steps.prep.outputs.ocs_tag }}
+      # - name: Push Docker Images to Quay
+      #   run: |
+      #     docker push ${{ steps.prep.outputs.ocs_tag }}
           
