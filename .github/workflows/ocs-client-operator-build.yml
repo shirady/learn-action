@@ -1,0 +1,46 @@
+name: Manual ocs-client-operator Build and Push Image
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch to Build From"
+        required: true
+
+jobs:
+  manual-build-and-publish-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: 'shirady/ocs-client-operator'
+          ref: ${{ github.event.inputs.branch }}
+          path: 'ocs-client-operator'
+
+      - name: Get Current Date
+        id: date
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+
+      - name: Login to Quay Registry
+        run: echo ${{ secrets.QUAY_PASS }} | docker login quay.io -u ${{ secrets.QUAY_USERNAME }} --password-stdin
+
+      - name: Prepare Tags
+        id: prep
+        run: |
+          OCS_TAG=quay.io/${{ secrets.QUAY_USERNAME }}/ocs-client-operator:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}
+          echo "ocs_tag=${OCS_TAG}" >> $GITHUB_OUTPUT
+    
+      - name: Build Image
+        run: |
+          cd ocs-client-operator
+          make all
+          docker image list
+
+      - name: Tag Image
+        run: |
+          docker tag quay.io/ocs-dev/ocs-operator ${{ steps.prep.outputs.ocs_tag }}
+
+      - name: Push Docker Images to Quay
+        run: |
+          docker push ${{ steps.prep.outputs.ocs_tag }}
+          
