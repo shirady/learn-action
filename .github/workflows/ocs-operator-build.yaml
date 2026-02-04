@@ -30,7 +30,7 @@ jobs:
       - name: Prepare Tags
         id: prep
         run: |
-          OCS_TAG=quay.io/${{ secrets.QUAY_USERNAME }}/ocs-operator:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}${{ github.event.inputs.branch }}
+          OCS_TAG=quay.io/${{ secrets.QUAY_USERNAME }}/ocs-operator:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}${{ github.event.inputs.suffix }}
           echo "ocs_tag=${OCS_TAG}" >> $GITHUB_OUTPUT
     
       - name: Build Image
