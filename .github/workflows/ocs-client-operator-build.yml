@@ -33,11 +33,11 @@ jobs:
           OCS_TAG=quay.io/${{ secrets.QUAY_USERNAME }}/ocs-client-operator:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}${{ github.event.inputs.suffix }}
           echo "ocs_tag=${OCS_TAG}" >> $GITHUB_OUTPUT
 
-      # - name: Set up Go
-      #   uses: actions/setup-go@v5
-      #   with:
-      #     go-version: '1.25.7'   # according to go.mod version
-      #     cache: true
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25.7'   # according to go.mod version
+          cache: true
           
       - name: Build Image
         run: |
