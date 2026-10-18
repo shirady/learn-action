@@ -5,6 +5,9 @@ on:
       branch:
         description: "Branch to Build From"
         required: true
+      suffix:
+        description: "Add suffix"
+        required: false
 
 jobs:
   manual-build-and-publish-image:
@@ -27,7 +30,7 @@ jobs:
       - name: Prepare Tags
         id: prep
         run: |
-          NOOBAA_TAG=quay.io/${{ secrets.QUAY_USERNAME }}/noobaa-core:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}
+          NOOBAA_TAG=quay.io/${{ secrets.QUAY_USERNAME }}/noobaa-core:${{ github.event.inputs.branch }}-${{ steps.date.outputs.date }}${{ github.event.inputs.suffix }}
           echo "noobaa_tag=${NOOBAA_TAG}" >> $GITHUB_OUTPUT
     
       - name: Build Image
